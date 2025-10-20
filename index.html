@@ -245,62 +245,48 @@
             font-weight: 900;
             text-align: center;
             margin-bottom: 60px;
-            color: #FFD700; /* Fallback color */
-            background: linear-gradient(45deg, #FFD700, #FFA500, #FF8C00, #FFD700);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5), 0 0 60px rgba(255, 165, 0, 0.3);
+            color: #FFD700;
             letter-spacing: 8px;
             position: relative;
             text-transform: uppercase;
             opacity: 0;
-            animation: gradientShift 3s ease infinite;
+            /* Use text-shadow for glow effect instead of filters */
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8),
+                         0 0 40px rgba(255, 165, 0, 0.6),
+                         0 0 60px rgba(255, 140, 0, 0.4),
+                         0 2px 4px rgba(0, 0, 0, 0.5);
+            /* Hardware acceleration for crisp rendering */
+            transform: translate3d(0, 0, 0);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            animation: titleGlow 2s ease-in-out infinite alternate;
         }
 
         .title span {
             display: inline-block;
             opacity: 0;
             transform: scale(0);
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8)) 
-                    drop-shadow(0 0 20px rgba(255, 165, 0, 0.6));
             will-change: transform, opacity;
+            /* Use transform3d to enable hardware acceleration for crisp rendering */
+            transform: translate3d(0, 0, 0);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        @keyframes titleExplode {
+
+
+        @keyframes titleGlow {
             0% {
-                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)) 
-                        drop-shadow(0 0 40px rgba(255, 165, 0, 0.6))
-                        drop-shadow(0 0 60px rgba(255, 140, 0, 0.5));
-            }
-            30% {
-                filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1)) 
-                        drop-shadow(0 0 60px rgba(255, 165, 0, 0.8))
-                        drop-shadow(0 0 80px rgba(255, 140, 0, 0.7));
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.8),
+                             0 0 40px rgba(255, 165, 0, 0.6),
+                             0 0 60px rgba(255, 140, 0, 0.4),
+                             0 2px 4px rgba(0, 0, 0, 0.5);
             }
             100% {
-                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)) 
-                        drop-shadow(0 0 40px rgba(255, 165, 0, 0.6))
-                        drop-shadow(0 0 60px rgba(255, 140, 0, 0.5));
-            }
-        }
-
-        @keyframes glow {
-            0%, 100% {
-                text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFA500, 0 0 40px #FFA500;
-            }
-            50% {
-                text-shadow: 0 0 15px #FFD700, 0 0 25px #FFD700, 0 0 35px #FF8C00, 0 0 45px #FF8C00;
-            }
-        }
-
-        @keyframes gradientShift {
-            0%, 100% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
+                text-shadow: 0 0 30px rgba(255, 215, 0, 1),
+                             0 0 50px rgba(255, 165, 0, 0.8),
+                             0 0 70px rgba(255, 140, 0, 0.6),
+                             0 2px 4px rgba(0, 0, 0, 0.5);
             }
         }
 
@@ -997,9 +983,10 @@
                             letter.style.opacity = '1';
                             letter.style.transform = 'scale(1) rotate(360deg)';
                             
-                            // Remove blur after animation completes
+                            // Ensure crisp rendering after animation completes
                             setTimeout(() => {
-                                letter.style.filter = 'none';
+                                letter.style.transform = 'scale(1) rotate(360deg) translate3d(0, 0, 0)';
+                                letter.style.transition = 'none';
                             }, 600);
                             
                             // Add a small particle burst for each letter
