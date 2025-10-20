@@ -255,13 +255,11 @@
             text-transform: uppercase;
             opacity: 0;
             filter: blur(10px);
-            animation: textAppear 1s ease 2s forwards;
+            animation: textAppear 1s ease 2s forwards, gradientShift 3s ease infinite;
         }
 
         .title span {
             display: inline-block;
-            opacity: 0;
-            filter: blur(5px);
         }
 
         @keyframes textAppear {
@@ -314,6 +312,40 @@
             }
             50% {
                 text-shadow: 0 0 15px #FFD700, 0 0 25px #FFD700, 0 0 35px #FF8C00, 0 0 45px #FF8C00;
+            }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 600;
+            text-align: center;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8),
+                         0 0 30px rgba(255, 165, 0, 0.6);
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: subtitleAppear 1s ease 3s forwards;
+            letter-spacing: 2px;
+        }
+
+        @keyframes subtitleAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
@@ -519,6 +551,9 @@
         @media (max-width: 768px) {
             .title {
                 font-size: 48px;
+            }
+            .subtitle {
+                font-size: 20px;
             }
             .action-buttons {
                 flex-direction: column;
@@ -924,16 +959,6 @@
                 // Remove main title blur and make it visible
                 mainTitle.style.filter = "none";
                 mainTitle.style.opacity = "1";
-                
-                // Animate each letter individually with blur effect
-                const letters = mainTitle.querySelectorAll('span');
-                letters.forEach((letter, index) => {
-                    setTimeout(() => {
-                        letter.style.filter = "none";
-                        letter.style.opacity = "1";
-                        letter.style.animation = `letterAppear 0.5s ease forwards`;
-                    }, index * 100);
-                });
             }, 1000);
         }
 
