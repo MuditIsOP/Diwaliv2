@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Diwali!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script:wght@400;700&family=Cinzel+Decorative:wght@700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            overflow-x: hidden;
+            background: #000;
+            cursor: none; /* Hide default cursor */
+        }
+
+        /* Custom cursor for Diwali theme */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #FFD700, #FF8C00);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px #FFD700, 0 0 20px #FF8C00;
+            animation: cursorPulse 1.5s infinite;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #FFD700;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+            animation: followerPulse 2s infinite;
+        }
+
+        @keyframes cursorPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        @keyframes followerPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.4; }
+        }
+
+        /* Stage 1: Initial Black Screen with Button */
+        .stage-1 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s ease;
+        }
+
+        .stage-1.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .celebrate-btn {
+            padding: 25px 60px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ffd700);
+            border: 3px solid #ffd700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: pulse 2s infinite;
+        }
+
+        .celebrate-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.9);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(255, 215, 0, 0.9);
+            }
+        }
+
+        /* Stage 2: Loading with Diya */
+        .stage-2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            transition: opacity 1.5s ease;
+        }
+
+        .stage-2.active {
+            display: flex;
+        }
+
+        .stage-2.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .diya-container {
+            text-align: center;
+        }
+
+        .diya {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .flame {
+            width: 30px;
+            height: 50px;
+            background: linear-gradient(to top, #ff6b35, #ffd700, #fff);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            left: 50%;
+            top: -30px;
+            transform: translateX(-50%);
+            animation: flicker 0.5s infinite alternate;
+            box-shadow: 0 0 20px #ffd700, 0 0 40px #ff6b35;
+        }
+
+        @keyframes flicker {
+            0% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-50%) scale(1.1) translateY(-5px);
+                opacity: 0.9;
+            }
+        }
+
+        .diya-base {
+            width: 80px;
+            height: 40px;
+            background: linear-gradient(to bottom, #d4af37, #aa8e39);
+            border-radius: 0 0 50% 50%;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
+        }
+
+        .loading-text {
+            color: #ffd700;
+            font-size: 24px;
+            margin-top: 30px;
+            animation: loadingPulse 1.5s infinite;
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Stage 3: Main Fireworks Screen */
+        .stage-3 {
+            position: relative;
+            min-height: 100vh;
+            display: none;
+            background: linear-gradient(to bottom, #1a0038, #0c0c3d, #000000);
+            background-size: 400% 400%;
+            animation: backgroundShift 10s ease infinite;
+        }
+
+        .stage-3.active {
+            display: block;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Twinkling stars for Diwali background */
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            padding: 150px 20px 50px 20px; /* Increased top padding to move text lower */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .title {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 80px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 60px;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FF8C00, #FFD700);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 8px;
+            position: relative;
+            text-transform: uppercase;
+            opacity: 0;
+            filter: blur(10px);
+            animation: textAppear 1s ease 2s forwards;
+        }
+
+        .title span {
+            display: inline-block;
+            opacity: 0;
+            filter: blur(5px);
+        }
+
+        @keyframes textAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+                filter: blur(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                filter: blur(0px);
+            }
+        }
+
+        @keyframes letterAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) rotate(10deg);
+                filter: blur(5px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotate(0);
+                filter: blur(0px);
+            }
+        }
+
+        @keyframes titleExplode {
+            0% {
+                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)) 
+                        drop-shadow(0 0 40px rgba(255, 165, 0, 0.6))
+                        drop-shadow(0 0 60px rgba(255, 140, 0, 0.5));
+            }
+            30% {
+                filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1)) 
+                        drop-shadow(0 0 60px rgba(255, 165, 0, 0.8))
+                        drop-shadow(0 0 80px rgba(255, 140, 0, 0.7));
+            }
+            100% {
+                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)) 
+                        drop-shadow(0 0 40px rgba(255, 165, 0, 0.6))
+                        drop-shadow(0 0 60px rgba(255, 140, 0, 0.5));
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFA500, 0 0 40px #FFA500;
+            }
+            50% {
+                text-shadow: 0 0 15px #FFD700, 0 0 25px #FFD700, 0 0 35px #FF8C00, 0 0 45px #FF8C00;
+            }
+        }
+
+        /* Firework explosion effect for title */
+        .firework-particle {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Particle burst behind title */
+        .title-particle {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            opacity: 0;
+            animation: buttonsAppear 1s ease 3s forwards;
+        }
+
+        @keyframes buttonsAppear {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .action-btn {
+            padding: 20px 45px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            border: 2px solid #ffd700;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+        }
+
+        /* Stage 4: Message Envelope */
+        .stage-4 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .stage-4.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .envelope-container {
+            position: relative;
+            width: 90vw;
+            max-width: 800px;
+            height: 80vh;
+            max-height: 600px;
+            perspective: 1000px;
+        }
+
+        .envelope {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .envelope-back {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #d4a574, #c9954a);
+            border: 3px solid #8b6f47;
+            position: absolute;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .envelope-flap {
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(135deg, #e6c9a8, #d4a574);
+            border: 3px solid #8b6f47;
+            border-bottom: none;
+            position: absolute;
+            top: 0;
+            transform-origin: top;
+            transform: rotateX(0deg);
+            animation: openEnvelope 2s ease 0.5s forwards;
+            box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+        }
+
+        @keyframes openEnvelope {
+            to {
+                transform: rotateX(-180deg);
+            }
+        }
+
+        .letter {
+            width: 90%;
+            height: 85%;
+            background: linear-gradient(to bottom, #f4e8d0, #e8dcc4);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid #d4a574;
+            opacity: 0;
+            animation: letterAppear 1.5s ease 2.5s forwards;
+            overflow-y: auto;
+        }
+
+        @keyframes letterAppear {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .letter-content {
+            font-family: 'Dancing Script', cursive;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #3a2f25;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .close-envelope {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 25px;
+            background: rgba(139, 111, 71, 0.8);
+            color: #fff;
+            border: 2px solid #d4a574;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+
+        .close-envelope:hover {
+            background: rgba(139, 111, 71, 1);
+            transform: scale(1.05);
+        }
+
+        .sparkle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: #ffd700;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 3;
+            animation: sparkleFloat 2s ease-out forwards;
+        }
+
+        @keyframes sparkleFloat {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 48px;
+            }
+            .action-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .action-btn {
+                padding: 15px 35px;
+                font-size: 18px;
+            }
+            .celebrate-btn {
+                padding: 20px 40px;
+                font-size: 22px;
+            }
+            .envelope-container {
+                width: 90%;
+                height: 80%;
+            }
+            .letter-content {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Stage 1: Initial Button -->
+    <div class="stage-1" id="stage1">
+        <button class="celebrate-btn" id="celebrateBtn">Celebrate Diwali</button>
+    </div>
+
+    <!-- Stage 2: Loading Screen -->
+    <div class="stage-2" id="stage2">
+        <div class="diya-container">
+            <div class="diya">
+                <div class="flame"></div>
+                <div class="diya-base"></div>
+            </div>
+            <div class="loading-text">Loading...</div>
+        </div>
+    </div>
+
+    <!-- Stage 3: Main Fireworks -->
+    <div class="stage-3" id="stage3">
+        <canvas id="fireworksCanvas"></canvas>
+        <div class="content-wrapper">
+            <h1 class="title" id="mainTitle">
+                <span>H</span><span>A</span><span>P</span><span>P</span><span>Y</span>
+                <span> </span>
+                <span>D</span><span>I</span><span>W</span><span>A</span><span>L</span><span>I</span><span>!</span>
+            </h1>
+            <div class="subtitle">May the festival of lights brighten your life!</div>
+            <div class="action-buttons">
+                <button class="action-btn" id="moreFireworksBtn">More Celebrations! 🎆</button>
+                <button class="action-btn" id="viewMessageBtn">View Message 💌</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stage 4: Message Envelope -->
+    <div class="stage-4" id="stage4">
+        <button class="close-envelope" id="closeEnvelope">Close ✕</button>
+        <div class="envelope-container">
+            <div class="envelope">
+                <div class="envelope-back"></div>
+                <div class="envelope-flap"></div>
+                <div class="letter">
+                    <div class="letter-content">
+                        Wishing you a very wonderful, luminous, and exhilarating Diwali, my cutie patootie! May this festival of lights burn away all negativity, filling your life and your family's with good luck and cleansed energy. You picked me up at my lowest and have since lit up every day like a sparkling diya, and for that, I'm endlessly grateful for your existence. May this Diwali bring you everything I wish for you—happiness, love, and prosperity—and all the joy you desire for your loved ones. Happy Diwali, My Sera! ✨
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="mainAudio" loop preload="auto">
+        <source src="assets/main.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="messageAudio" loop preload="auto">
+        <source src="assets/message.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="fireworkAudio" preload="auto">
+        <source src="assets/firework.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Custom cursor elements -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <script>
+        const stage1 = document.getElementById('stage1');
+        const stage2 = document.getElementById('stage2');
+        const stage3 = document.getElementById('stage3');
+        const stage4 = document.getElementById('stage4');
+        const celebrateBtn = document.getElementById('celebrateBtn');
+        const moreFireworksBtn = document.getElementById('moreFireworksBtn');
+        const viewMessageBtn = document.getElementById('viewMessageBtn');
+        const closeEnvelope = document.getElementById('closeEnvelope');
+        const mainTitle = document.getElementById('mainTitle');
+        const mainAudio = document.getElementById('mainAudio');
+        const messageAudio = document.getElementById('messageAudio');
+        const fireworkAudio = document.getElementById('fireworkAudio');
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+
+        // Custom cursor movement
+        document.addEventListener('mousemove', (e) => {
+            if (cursor && cursorFollower) {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+                cursorFollower.style.left = e.clientX + 'px';
+                cursorFollower.style.top = e.clientY + 'px';
+                
+                // Create occasional sparkles as the cursor moves
+                if (Math.random() < 0.05) { // 5% chance per mouse move
+                    createCursorSparkle(e.clientX, e.clientY);
+                }
+            }
+        });
+
+        // Create sparkle effect at cursor position
+        function createCursorSparkle(x, y) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = x + 'px';
+            sparkle.style.top = y + 'px';
+            sparkle.style.background = '#FFD700';
+            sparkle.style.boxShadow = '0 0 10px #FFD700';
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => sparkle.remove(), 1000);
+        }
+
+        // Add crackling sound effect for fireworks
+        function playFireworkSound() {
+            try {
+                fireworkAudio.currentTime = 0;
+                fireworkAudio.volume = 0.3; // Keep volume low to maintain focus on visual elements
+                fireworkAudio.play().catch(e => console.log('Firework audio play failed:', e));
+            } catch (e) {
+                console.log('Firework sound error:', e);
+            }
+        }
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Stage 1 -> Stage 2
+        celebrateBtn.addEventListener('click', () => {
+            mainAudio.play().catch(e => console.log('Audio play failed:', e));
+            
+            stage1.classList.add('hidden');
+            stage2.classList.add('active');
+
+            // Stage 2 -> Stage 3 after 3 seconds
+            setTimeout(() => {
+                stage2.classList.add('hidden');
+                stage3.classList.add('active');
+                setTimeout(() => {
+                    createTitleBurst();
+                    startFireworks();
+                    createSparkles();
+                    createStars();
+                }, 100);
+            }, 3000);
+        });
+
+        // More Fireworks Button
+        moreFireworksBtn.addEventListener('click', () => {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * canvas.width;
+                    const y = Math.random() * canvas.height * 0.7;
+                    fireworks.push(new Firework(x, y));
+                    playFireworkSound();
+                }, i * 100);
+            }
+        });
+
+        // View Message Button
+        viewMessageBtn.addEventListener('click', () => {
+            mainAudio.pause();
+            messageAudio.play().catch(e => console.log('Message audio play failed:', e));
+            stage4.classList.add('active');
+        });
+
+        // Close Envelope
+        closeEnvelope.addEventListener('click', () => {
+            messageAudio.pause();
+            mainAudio.play().catch(e => console.log('Audio play failed:', e));
+            stage4.classList.remove('active');
+        });
+
+        // Fireworks Classes
+        class Firework {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.particles = [];
+                // Diwali colors: gold, orange, red, and some bright colors
+                this.hue = [45, 30, 15, 0, 330][Math.floor(Math.random() * 5)];
+                
+                // Create different explosion patterns
+                const patternType = Math.floor(Math.random() * 3);
+                let particleCount = 120;
+                
+                switch(patternType) {
+                    case 0: // Standard explosion
+                        particleCount = 120;
+                        break;
+                    case 1: // Dense explosion
+                        particleCount = 200;
+                        break;
+                    case 2: // Sparse explosion
+                        particleCount = 80;
+                        break;
+                }
+                
+                for (let i = 0; i < particleCount; i++) {
+                    this.particles.push(new Particle(this.x, this.y, this.hue, patternType));
+                }
+            }
+
+            update() {
+                this.particles.forEach((particle, i) => {
+                    particle.update();
+                    if (particle.alpha <= 0) {
+                        this.particles.splice(i, 1);
+                    }
+                });
+            }
+
+            draw() {
+                this.particles.forEach(particle => particle.draw());
+            }
+        }
+
+        class Particle {
+            constructor(x, y, hue, patternType = 0) {
+                this.x = x;
+                this.y = y;
+                this.hue = hue;
+                this.angle = Math.random() * Math.PI * 2;
+                this.speed = Math.random() * 6 + 2;
+                this.vx = Math.cos(this.angle) * this.speed;
+                this.vy = Math.sin(this.angle) * this.speed;
+                this.alpha = 1;
+                this.decay = Math.random() * 0.02 + 0.01;
+                this.gravity = 0.08;
+                this.size = Math.random() * 4 + 2;
+                // Add some variation to colors for more vibrant fireworks
+                this.brightness = Math.random() * 50 + 50;
+                
+                // Modify velocity based on pattern type
+                switch(patternType) {
+                    case 1: // Dense explosion - particles move slower
+                        this.vx *= 0.7;
+                        this.vy *= 0.7;
+                        break;
+                    case 2: // Sparse explosion - particles move faster
+                        this.vx *= 1.3;
+                        this.vy *= 1.3;
+                        break;
+                }
+            }
+
+            update() {
+                this.vx *= 0.97;
+                this.vy *= 0.97;
+                this.vy += this.gravity;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= this.decay;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = `hsl(${this.hue}, 100%, ${this.brightness}%)`;
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = `hsl(${this.hue}, 100%, ${this.brightness}%)`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        let fireworks = [];
+        let autoFireworkInterval;
+
+        function startFireworks() {
+            autoFireworkInterval = setInterval(() => {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height * 0.6;
+                fireworks.push(new Firework(x, y));
+                playFireworkSound(); // Play sound for each firework
+            }, 800);
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            fireworks.forEach((firework, i) => {
+                firework.update();
+                firework.draw();
+                if (firework.particles.length === 0) {
+                    fireworks.splice(i, 1);
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        // Create twinkling stars for the background
+        function createStars() {
+            const stage3 = document.querySelector('.stage-3');
+            if (!stage3) return;
+            
+            // Clear existing stars
+            const existingStars = document.querySelectorAll('.star');
+            existingStars.forEach(star => star.remove());
+            
+            const starCount = 150;
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
+                star.style.animationDelay = Math.random() * 5 + 's';
+                stage3.appendChild(star);
+            }
+        }
+
+        animate();
+
+        function createTitleBurst() {
+            const titleRect = mainTitle.getBoundingClientRect();
+            const centerX = titleRect.left + titleRect.width / 2;
+            const centerY = titleRect.top + titleRect.height / 2;
+            
+            // Play firework sound for title burst
+            playFireworkSound();
+            
+            // Create firework explosion for the title
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'firework-particle';
+                    const angle = (Math.PI * 2 * i) / 100;
+                    const velocity = Math.random() * 150 + 50;
+                    // Diwali colors: gold, orange, red
+                    const hue = [45, 30, 15, 0, 330][Math.floor(Math.random() * 5)];
+                    
+                    particle.style.background = `hsl(${hue}, 100%, 60%)`;
+                    particle.style.left = centerX + 'px';
+                    particle.style.top = centerY + 'px';
+                    particle.style.boxShadow = `0 0 10px hsl(${hue}, 100%, 60%)`;
+                    
+                    document.body.appendChild(particle);
+                    
+                    let x = 0, y = 0;
+                    let vx = Math.cos(angle) * velocity;
+                    let vy = Math.sin(angle) * velocity;
+                    let alpha = 1;
+                    const gravity = 0.2;
+                    
+                    const animateParticle = () => {
+                        vx *= 0.97;
+                        vy *= 0.97;
+                        vy += gravity;
+                        x += vx * 0.016;
+                        y += vy * 0.016;
+                        alpha -= 0.015;
+                        
+                        particle.style.transform = `translate(${x}px, ${y}px)`;
+                        particle.style.opacity = alpha;
+                        
+                        if (alpha > 0) {
+                            requestAnimationFrame(animateParticle);
+                        } else {
+                            particle.remove();
+                        }
+                    };
+                    
+                    animateParticle();
+                }, i * 10);
+            }
+            
+            // After explosion, form the text with a golden glow effect
+            setTimeout(() => {
+                // Remove main title blur and make it visible
+                mainTitle.style.filter = "none";
+                mainTitle.style.opacity = "1";
+                
+                // Animate each letter individually with blur effect
+                const letters = mainTitle.querySelectorAll('span');
+                letters.forEach((letter, index) => {
+                    setTimeout(() => {
+                        letter.style.filter = "none";
+                        letter.style.opacity = "1";
+                        letter.style.animation = `letterAppear 0.5s ease forwards`;
+                    }, index * 100);
+                });
+            }, 1000);
+        }
+
+        function createSparkles() {
+            setInterval(() => {
+                for (let i = 0; i < 3; i++) {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.style.left = Math.random() * window.innerWidth + 'px';
+                    sparkle.style.top = Math.random() * window.innerHeight + 'px';
+                    document.body.appendChild(sparkle);
+                    
+                    setTimeout(() => sparkle.remove(), 2000);
+                }
+            }, 200);
+        }
+    </script>
+</body>
+</html>
