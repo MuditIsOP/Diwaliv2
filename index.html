@@ -997,6 +997,11 @@
                             letter.style.opacity = '1';
                             letter.style.transform = 'scale(1) rotate(360deg)';
                             
+                            // Remove blur after animation completes
+                            setTimeout(() => {
+                                letter.style.filter = 'none';
+                            }, 600);
+                            
                             // Add a small particle burst for each letter
                             const letterRect = letter.getBoundingClientRect();
                             const letterX = letterRect.left + letterRect.width / 2;
